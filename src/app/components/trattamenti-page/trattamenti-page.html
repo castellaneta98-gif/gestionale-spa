@@ -1,0 +1,51 @@
+<div class="container">
+  <h1>Trattamenti</h1>
+
+  <form [formGroup]="trattamentoForm" (ngSubmit)="onSubmit()" class="trattamento-form">
+    <div class="form-field">
+      <label for="nome">Nome</label>
+      <input id="nome" type="text" formControlName="nome">
+      @if (trattamentoForm.get('nome')?.invalid && trattamentoForm.get('nome')?.touched) {
+        <span class="field-error">Il nome è obbligatorio.</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="descrizione">Descrizione</label>
+      <textarea id="descrizione" formControlName="descrizione"></textarea>
+      @if (trattamentoForm.get('descrizione')?.invalid && trattamentoForm.get('descrizione')?.touched) {
+        <span class="field-error">La descrizione è obbligatoria.</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="durataMinuti">Durata (minuti)</label>
+      <input id="durataMinuti" type="number" formControlName="durataMinuti">
+      @if (trattamentoForm.get('durataMinuti')?.invalid && trattamentoForm.get('durataMinuti')?.touched) {
+        <span class="field-error">Inserisci una durata valida.</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="prezzo">Prezzo (€)</label>
+      <input id="prezzo" type="number" formControlName="prezzo">
+      @if (trattamentoForm.get('prezzo')?.invalid && trattamentoForm.get('prezzo')?.touched) {
+        <span class="field-error">Inserisci un prezzo valido.</span>
+      }
+    </div>
+
+    <button type="submit">Salva trattamento</button>
+  </form>
+
+  <hr>
+
+  @if (trattamenti().length === 0) {
+    <p>Nessun trattamento presente.</p>
+  }
+
+  <ul>
+    @for (t of trattamenti(); track t.id) {
+      <li>{{ t.nome }} — {{ t.durataMinuti }} min — {{ t.prezzo }}€</li>
+    }
+  </ul>
+</div>

@@ -1,0 +1,71 @@
+<div class="container">
+  <h1>Clienti</h1>
+
+  <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()" class="trattamento-form">
+    <div class="form-field">
+      <label for="nomeCliente">Nome</label>
+      <input id="nomeCliente" type="text" formControlName="nome">
+      @if (clienteForm.get('nome')?.invalid && clienteForm.get('nome')?.touched) {
+        <span class="field-error">Il nome è obbligatorio.</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="cognome">Cognome</label>
+      <input id="cognome" type="text" formControlName="cognome">
+      @if (clienteForm.get('cognome')?.invalid && clienteForm.get('cognome')?.touched) {
+        <span class="field-error">Il cognome è obbligatorio.</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="telefono">Telefono</label>
+      <input id="telefono" type="tel" formControlName="telefono">
+      @if (clienteForm.get('telefono')?.invalid && clienteForm.get('telefono')?.touched) {
+        <span class="field-error">Il telefono è obbligatorio.</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email">
+      @if (clienteForm.get('email')?.invalid && clienteForm.get('email')?.touched) {
+        <span class="field-error">Inserisci un'email valida.</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="note">Scheda personalizzata (note, preferenze, allergie)</label>
+      <textarea id="note" formControlName="note"></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">{{ editingId() ? 'Aggiorna cliente' : 'Salva cliente' }}</button>
+      @if (editingId()) {
+        <button type="button" class="btn-secondary" (click)="annullaModifica()">Annulla</button>
+      }
+    </div>
+  </form>
+
+  @if (clienti().length === 0) {
+    <p>Nessun cliente presente.</p>
+  }
+
+  <ul>
+    @for (c of clienti(); track c.id) {
+      <li>
+        <div class="li-content">
+          <strong>{{ c.nome }} {{ c.cognome }}</strong>
+          <span>{{ c.telefono }} — {{ c.email }}</span>
+          @if (c.note) {
+            <span class="note-preview">{{ c.note }}</span>
+          }
+        </div>
+        <div class="li-actions">
+          <button class="btn-icon" (click)="modificaCliente(c)">Modifica</button>
+          <button class="btn-icon btn-danger" (click)="eliminaCliente(c.id!)">Elimina</button>
+        </div>
+      </li>
+    }
+  </ul>
+</div>

@@ -1,0 +1,21 @@
+<div class="login-container">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="trattamento-form login-form">
+    <h1>Accedi</h1>
+
+    @if (errore()) {
+  <div class="field-error">{{ errore() }}</div>
+}
+
+    <div class="form-field">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email">
+    </div>
+
+    <div class="form-field">
+      <label for="password">Password</label>
+      <input id="password" type="password" formControlName="password">
+    </div>
+
+    <button type="submit">Accedi</button>
+  </form>
+</div>

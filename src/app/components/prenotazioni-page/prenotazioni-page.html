@@ -1,0 +1,87 @@
+<div class="container">
+  <h1>Prenotazioni</h1>
+
+  <form [formGroup]="prenotazioneForm" (ngSubmit)="onSubmit()" class="trattamento-form">
+    <div class="form-field">
+      <label for="clienteId">Cliente</label>
+      <select id="clienteId" formControlName="clienteId">
+        <option value="" disabled selected>Seleziona un cliente</option>
+        @for (c of clienti(); track c.id) {
+          <option [value]="c.id">{{ c.nome }} {{ c.cognome }}</option>
+        }
+      </select>
+      @if (prenotazioneForm.get('clienteId')?.invalid && prenotazioneForm.get('clienteId')?.touched) {
+        <span class="field-error">Seleziona un cliente.</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="terapistaId">Terapista</label>
+      <select id="terapistaId" formControlName="terapistaId">
+        <option value="" disabled selected>Seleziona un terapista</option>
+        @for (t of terapisti(); track t.id) {
+          <option [value]="t.id">{{ t.nome }} {{ t.cognome }}</option>
+        }
+      </select>
+      @if (prenotazioneForm.get('terapistaId')?.invalid && prenotazioneForm.get('terapistaId')?.touched) {
+        <span class="field-error">Seleziona un terapista.</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="trattamentoId">Trattamento</label>
+      <select id="trattamentoId" formControlName="trattamentoId">
+        <option value="" disabled selected>Seleziona un trattamento</option>
+        @for (t of trattamenti(); track t.id) {
+          <option [value]="t.id">{{ t.nome }} ({{ t.durataMinuti }} min — {{ t.prezzo }}€)</option>
+        }
+      </select>
+      @if (prenotazioneForm.get('trattamentoId')?.invalid && prenotazioneForm.get('trattamentoId')?.touched) {
+        <span class="field-error">Seleziona un trattamento.</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="data">Data</label>
+      <input id="data" type="date" formControlName="data">
+      @if (prenotazioneForm.get('data')?.invalid && prenotazioneForm.get('data')?.touched) {
+        <span class="field-error">La data è obbligatoria.</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="ora">Ora</label>
+      <input id="ora" type="time" formControlName="ora">
+      @if (prenotazioneForm.get('ora')?.invalid && prenotazioneForm.get('ora')?.touched) {
+        <span class="field-error">L'ora è obbligatoria.</span>
+      }
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">{{ editingId() ? 'Aggiorna prenotazione' : 'Salva prenotazione' }}</button>
+      @if (editingId()) {
+        <button type="button" class="btn-secondary" (click)="annullaModifica()">Annulla</button>
+      }
+    </div>
+  </form>
+
+  @if (prenotazioniConDettagli().length === 0) {
+    <p>Nessuna prenotazione presente.</p>
+  }
+
+  <ul>
+    @for (p of prenotazioniConDettagli(); track p.id) {
+      <li>
+        <div class="li-content">
+          <strong>{{ p.clienteNome }}</strong>
+          <span>{{ p.trattamentoNome }} con {{ p.terapistaNome }}</span>
+          <span>{{ p.data | date:'dd/MM/yyyy' }} alle {{ p.ora }}</span>
+        </div>
+        <div class="li-actions">
+          <button class="btn-icon" (click)="modificaPrenotazione(p)">Modifica</button>
+          <button class="btn-icon btn-danger" (click)="eliminaPrenotazione(p.id!)">Elimina</button>
+        </div>
+      </li>
+    }
+  </ul>
+</div>

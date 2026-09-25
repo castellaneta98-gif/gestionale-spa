@@ -1,0 +1,82 @@
+<div class="container">
+  <h1>Terapisti</h1>
+
+  <form [formGroup]="terapistaForm" (ngSubmit)="onSubmit()" class="trattamento-form">
+    <div class="form-field">
+      <label for="nomeTerapista">Nome</label>
+      <input id="nomeTerapista" type="text" formControlName="nome">
+      @if (terapistaForm.get('nome')?.invalid && terapistaForm.get('nome')?.touched) {
+        <span class="field-error">Il nome è obbligatorio.</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="cognomeTerapista">Cognome</label>
+      <input id="cognomeTerapista" type="text" formControlName="cognome">
+      @if (terapistaForm.get('cognome')?.invalid && terapistaForm.get('cognome')?.touched) {
+        <span class="field-error">Il cognome è obbligatorio.</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="specializzazione">Specializzazione</label>
+      <input id="specializzazione" type="text" formControlName="specializzazione" placeholder="Es. Massoterapista, Estetista...">
+      @if (terapistaForm.get('specializzazione')?.invalid && terapistaForm.get('specializzazione')?.touched) {
+        <span class="field-error">La specializzazione è obbligatoria.</span>
+      }
+    </div>
+
+    <div class="turni-section">
+      <label>Turni settimanali</label>
+
+      <div formArrayName="turni">
+        @for (turno of turniArray.controls; track $index; let i = $index) {
+          <div [formGroupName]="i" class="turno-row">
+            <select formControlName="giorno">
+              @for (giorno of giorniSettimana; track giorno) {
+                <option [value]="giorno">{{ giorno }}</option>
+              }
+            </select>
+            <input type="time" formControlName="oraInizio">
+            <span>—</span>
+            <input type="time" formControlName="oraFine">
+            <button type="button" class="btn-icon btn-danger" (click)="rimuoviTurno(i)">Rimuovi</button>
+          </div>
+        }
+      </div>
+
+      <button type="button" class="btn-secondary" (click)="aggiungiTurno()">+ Aggiungi turno</button>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">{{ editingId() ? 'Aggiorna terapista' : 'Salva terapista' }}</button>
+      @if (editingId()) {
+        <button type="button" class="btn-secondary" (click)="annullaModifica()">Annulla</button>
+      }
+    </div>
+  </form>
+
+  @if (terapisti().length === 0) {
+    <p>Nessun terapista presente.</p>
+  }
+
+  <ul>
+    @for (t of terapisti(); track t.id) {
+      <li>
+        <div class="li-content">
+          <strong>{{ t.nome }} {{ t.cognome }}</strong>
+          <span>{{ t.specializzazione }}</span>
+          <div class="turni-preview">
+            @for (turno of t.turni; track $index) {
+              <span class="turno-badge">{{ turno.giorno }} {{ turno.oraInizio }}-{{ turno.oraFine }}</span>
+            }
+          </div>
+        </div>
+        <div class="li-actions">
+          <button class="btn-icon" (click)="modificaTerapista(t)">Modifica</button>
+          <button class="btn-icon btn-danger" (click)="eliminaTerapista(t.id!)">Elimina</button>
+        </div>
+      </li>
+    }
+  </ul>
+</div>

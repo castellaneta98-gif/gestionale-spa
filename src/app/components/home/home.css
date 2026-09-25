@@ -1,0 +1,54 @@
+:host {
+  display: block;
+}
+
+.hero {
+  max-width: 700px;
+  margin: 5rem auto;
+  text-align: center;
+  padding: 0 1.5rem;
+}
+
+.hero h1 {
+  color: #6b8a6a;
+  font-size: 2.4rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  color: #7a7a72;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn-hero {
+  background: #8fa88e;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.85rem 1.75rem;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.btn-hero:hover {
+  background: #6b8a6a;
+}
+
+.btn-hero-secondary {
+  background: transparent;
+  color: #6b8a6a;
+  border: 1px solid #8fa88e;
+}
+
+.btn-hero-secondary:hover {
+  background: #efe6d8;
+}
